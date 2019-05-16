@@ -17,4 +17,6 @@ No commands are set up at this time. Planned commands to implement include:
 * ~isBruh: Determines if something is in fact a bruh moment
 * ~roast: Roasts the person who called this command. All in good fun.
 * ~pasta: Inserts spaghetti into the chat (random copypasta)
+* ~bedtime: If it's past 7:00pm eastern tells you to go to bed, because friends care about your sleep schedule
+* ~hydrate: Reminds you to drink water for optimal hydration.
 * Some kind of error when no commands are found
