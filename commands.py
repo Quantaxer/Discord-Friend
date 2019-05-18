@@ -43,7 +43,13 @@ async def on_message(message):
         msg = 'Hi' + phrase[1] + ', I\'m Dad!'.format(message)
         await message.channel.send(msg)
 
-    # BRUH THIS IS STUPID for some reason you need this line here for commands to work
+    if 'nice' in message.content:
+        await message.channel.send("nice")
+
+    if 'bruh' in message.content:
+        await message.channel.send("This really be a bruh moment")
+
+    # THIS IS STUPID for some reason you need this line here for commands to work
     await client.process_commands(message)
 
 
@@ -94,7 +100,7 @@ async def colossal(ctx):
              "hf hf hf hf hf hf hf hf\nhf hf hf hf hf hf hf hf",
              "anyways, {} is getting their ass exposed".format(ctx.author.mention),
              "dedotated W A M",
-             "Help my pee is orange I'm turning into a pineapple",
+             "Help my pee is orange I'm rotting",
              "Meet marcel toing. proud owner of ratatatatoing\nchef toing toing.\nta toing\nonly the freshest toing.",
              "seeya idot",
              "THAT'S IT, I\'M GONNA DDOS YOU",
@@ -104,11 +110,14 @@ async def colossal(ctx):
              "MINECRAP",
              "wan go diney wurl\nflawda?\northano\nme wanna go flawda\ndindlee whirld!",
              "This is an absolute colossal mess",
-             "Don't mind me I'm just a bit of a mess"]
+             "Don't mind me I'm just a bit of a mess",
+             "My treehouse, my rules. No trees allowed",
+             "SQUILLIAMS TENNISBALLS",
+             "Is it CRONCH time?\nIt is always time to get a spicy big C R O N C H at the UC"]
 
     # loop and choose a random t r a s h to print
-    for i in range(30):
-        await ctx.send(trash[random.randint(0, 14)])
+    for i in range(40):
+        await ctx.send(trash[random.randint(0, 17)])
         await asyncio.sleep(1.5)
 
 # custom help command
@@ -118,16 +127,38 @@ async def help(ctx):
     embed = discord.Embed(colour=discord.Colour.blue())
     # Create the embed
     embed.set_author(name="List of commands")
+    embed.add_field(name="~b", value="fills a sentence with the b emoji. Must have at least one word following command",
+                    inline=False)
     embed.add_field(name="~bedtime", value="Tells you to go to sleep", inline=False)
     embed.add_field(name="~colossal", value="Creates a colossal mess in chat. Not for the faint of heart", inline=False)
     embed.add_field(name="~leave",
-                    value="leaves the server to go get smokes at the convenience store, never to return again",
+                    value="Leaves the server to go get smokes at the convenience store, never to return again",
                     inline=False)
     embed.add_field(name="~ping", value="returns time it takes to reach server", inline=False)
     embed.add_field(name="~pun", value="Tells a random dad joke that nobody likes", inline=False)
 
     # send the embed
     await ctx.send(author.mention, embed=embed)
+
+# Command to 🅱ify a sentence
+@client.command(pass_context=True)
+async def b(ctx, *args):
+    new_list = []
+    # check if command was used properly
+    if len(args) == 0:
+        await ctx.send("Include at least one word in that command you garfield lookin ass")
+    # loop through arguments
+    for i in args:
+        # edit the string, replacing b with emoji B. Also need to set string to lowercase
+        new_str = i.lower().replace('b', '🅱')
+        # Create a temp list in order to edit the first character because python strings are immutable
+        temp_list = list(new_str)
+        temp_list[0] = '🅱'
+        final_str = "".join(temp_list)
+        # append final version of the word
+        new_list.append(final_str)
+
+    await ctx.send(" ".join(new_list))
 
 # Run the client with the token
 client.run(TOKEN)
