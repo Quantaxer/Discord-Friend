@@ -46,8 +46,13 @@ async def on_message(message):
     if 'nice' in message.content:
         await message.channel.send("nice")
 
+    # bruh moment
     if 'bruh' in message.content:
         await message.channel.send("This really be a bruh moment")
+
+    # no u
+    if message.content.startswith('no u'):
+        await message.channel.send('no u')
 
     # THIS IS STUPID for some reason you need this line here for commands to work
     await client.process_commands(message)
@@ -96,28 +101,29 @@ async def pun(ctx):
 # colossal command, injects a bunch of garbage into the channel it was called in
 @client.command()
 async def colossal(ctx):
-    trash = ["the bruh momentum is the events leading up to a bruh moment",
+    trash = ["the bruh momentum is the event leading up to a bruh moment",
              "hf hf hf hf hf hf hf hf\nhf hf hf hf hf hf hf hf",
              "anyways, {} is getting their ass exposed".format(ctx.author.mention),
              "dedotated W A M",
              "Help my pee is orange I'm rotting",
-             "Meet marcel toing. proud owner of ratatatatoing\nchef toing toing.\nta toing\nonly the freshest toing.",
+             "Meet marcel toing. Proud owner of restaurant ratatatatoing\nchef toing toing.\nserving only the freshest toing.",
              "seeya idot",
              "THAT'S IT, I\'M GONNA DDOS YOU",
              "mmmmm c r e a m y",
              "snans",
              "SNANS",
              "MINECRAP",
+             "Ok yeah sure thing that's valid whatever you say Mr. Galaxy Brain you're the real colossal mess",
              "wan go diney wurl\nflawda?\northano\nme wanna go flawda\ndindlee whirld!",
              "This is an absolute colossal mess",
              "Don't mind me I'm just a bit of a mess",
              "My treehouse, my rules. No trees allowed",
              "SQUILLIAMS TENNISBALLS",
-             "Is it CRONCH time?\nIt is always time to get a spicy big C R O N C H at the UC"]
+             "Is it CRONCH time?\nIt is always spicy big C R O N C H time"]
 
     # loop and choose a random t r a s h to print
     for i in range(40):
-        await ctx.send(trash[random.randint(0, 17)])
+        await ctx.send(trash[random.randint(0, 18)])
         await asyncio.sleep(1.5)
 
 # custom help command
@@ -135,6 +141,7 @@ async def help(ctx):
                     value="Leaves the server to go get smokes at the convenience store, never to return again",
                     inline=False)
     embed.add_field(name="~ping", value="returns time it takes to reach server", inline=False)
+    embed.add_field(name="~pointer", value="A terrible explanation of how a pointer works in c", inline=False)
     embed.add_field(name="~pun", value="Tells a random dad joke that nobody likes", inline=False)
 
     # send the embed
@@ -159,6 +166,11 @@ async def b(ctx, *args):
         new_list.append(final_str)
 
     await ctx.send(" ".join(new_list))
+
+# A terrible explanation of what a pointer is
+@client.command()
+async def pointer(ctx):
+    await ctx.send("A pointer is something that points to a point in memory. This point is where the pointer is stored, allowing you to do stuff. You can even have pointers that point to pointers, which is called a double pointer. For example, you could have a pointer point to a pointer that points to a structure that has a variable which is a pointer to a pointer to an integer. There is no point.\n-Professor Kremer, phd in bigbrain")
 
 # Run the client with the token
 client.run(TOKEN)
