@@ -27,9 +27,11 @@ class CommandCogs(commands.Cog):
     async def pun(self, ctx):
         """Tells a random dad joke that nobody likes"""
         list_of_puns = []
-        # Get path of pun file
+        # Get path of current directory
         cur_path = os.path.dirname(__file__)
-        new_path = os.path.relpath('..\\data\\puns.txt', cur_path)
+        # Go down one directory to the parent and open file
+        parent_path = os.path.split(cur_path)[0]
+        new_path = os.path.relpath('data\\puns.txt', parent_path)
         # open file and append each line to the list
         with open(new_path, 'r') as f:
             for line in f:
