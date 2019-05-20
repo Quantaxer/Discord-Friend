@@ -19,6 +19,7 @@ class AdminCommands(commands.Cog):
         embed.add_field(name="~bean", value="Bans a user", inline=False)
         embed.add_field(name="~bedtime", value="Tells you to go to sleep", inline=False)
         embed.add_field(name="~colossal", value="Creates a colossal mess in chat. Not for the faint of heart", inline=False)
+        embed.add_field(name="~cronch", value="Tells you if it is time to get a big cronch", inline=False)
         embed.add_field(name="~funky", value="Funky consoles you in your time of need", inline=False)
         embed.add_field(name="~leave",
                         value="Leaves the server to go get smokes at the convenience store, never to return again",
@@ -38,7 +39,7 @@ class AdminCommands(commands.Cog):
         embed = discord.Embed()
         embed.set_image(url='https://media3.giphy.com/media/3d6WO0F9SK9hbmpsiX/giphy.gif')
         await ctx.send(embed=embed)
-        await asyncio.sleep(5)
+        await asyncio.sleep(2)
         await ctx.channel.purge(limit=amount + 2)
 
     # Error handler for rewind command
@@ -68,6 +69,7 @@ class AdminCommands(commands.Cog):
     async def on_command_error(self, ctx, error):
         if isinstance(error, commands.MissingRequiredArgument):
             await ctx.send("Error: Missing required argument\n Usage: ~bean @user \"reason\"")
+
 
 # adds the cog to the main bot
 def setup(client):

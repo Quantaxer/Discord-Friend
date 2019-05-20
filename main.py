@@ -37,6 +37,8 @@ async def on_ready():
 async def on_command_error(ctx, error):
     if isinstance(error, commands.CommandNotFound):
         await ctx.send("This ain't it chief (Command not found)")
+    else:
+        await ctx.send(error)
 
 # Run the client with the token
 client.run(TOKEN)

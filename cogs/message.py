@@ -1,10 +1,14 @@
 from discord.ext import commands
+import discord
+import asyncio
 
 
-class MessageCog(commands.Cog):
+class Message(commands.Cog):
     def __init__(self, client):
         self.client = client
 
+    # event listener for any message sent
+    @commands.Cog.listener()
     async def on_message(self, message):
         # we do not want the bot to reply to itself
         if message.author == self.client.user:
@@ -37,9 +41,15 @@ class MessageCog(commands.Cog):
         if message.content.startswith('no u'):
             await message.channel.send('no u')
 
-        # THIS IS STUPID for some reason you need this line here for commands to work
-        await self.client.process_commands(message)
+        # sad waluigi noises
+        if message.content.startswith('wah'):
+            embed = discord.Embed()
+            embed.set_image(url='https://pbs.twimg.com/profile_images/636426631876231168/8kZlHCEe_400x400.jpg')
+            await message.channel.send("*sad waluigi noises*")
+            asyncio.sleep(.5)
+            await message.channel.send(embed=embed)
+
 
 # adds the cog to the main bot
 def setup(client):
-    client.add_cog(MessageCog(client))
+    client.add_cog(Message(client))

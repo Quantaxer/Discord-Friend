@@ -117,6 +117,17 @@ class CommandCogs(commands.Cog):
         embed.set_image(url='https://vignette.wikia.nocookie.net/mario/images/b/b0/Funky_Kong_Artwork_-_Mario_Kart_Wii.png/revision/latest?cb=20120424225007')
         await ctx.send(embed=embed)
 
+    # cronch command to tell if you should order a big cronch right now. Based on normal eating times
+    @commands.command()
+    async def cronch(self, ctx):
+        cronch_time = [11, 12, 13, 17, 18, 19, 7, 8, 9]
+        current = datetime.datetime.now().time()
+        if current.hour in cronch_time:
+            message = "It is time to CRONCH"
+        else:
+            message = "It is not CRONCH time right now"
+        await ctx.send(message)
+
 
 # adds the cog to the main bot
 def setup(client):
