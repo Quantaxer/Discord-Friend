@@ -7,40 +7,34 @@ class AdminCommands(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    # custom help command
+    # Command just to test if it is connected
     @commands.command()
-    async def help(self, ctx):
-        author = ctx.message.author
-        embed = discord.Embed(colour=discord.Colour.blue())
-        # Create the embed
-        embed.set_author(name="List of commands")
-        embed.add_field(name="~b", value="fills a sentence with the b emoji. Must have at least one word following command",
-                        inline=False)
-        embed.add_field(name="~bean", value="Bans a user", inline=False)
-        embed.add_field(name="~bedtime", value="Tells you to go to sleep", inline=False)
-        embed.add_field(name="~colossal", value="Creates a colossal mess in chat. Not for the faint of heart", inline=False)
-        embed.add_field(name="~cronch", value="Tells you if it is time to get a big cronch", inline=False)
-        embed.add_field(name="~funky", value="Funky consoles you in your time of need", inline=False)
-        embed.add_field(name="~leave",
-                        value="Leaves the server to go get smokes at the convenience store, never to return again",
-                        inline=False)
-        embed.add_field(name="~ping", value="returns time it takes to reach server", inline=False)
-        embed.add_field(name="~pointer", value="A terrible explanation of how a pointer works in c", inline=False)
-        embed.add_field(name="~pun", value="Tells a random dad joke that nobody likes", inline=False)
-        embed.add_field(name="~rewind", value="It's rewind time (deletes user selected amount of messages)", inline=False)
+    async def ping(self, ctx):
+        """Returns time it takes to reach server"""
+        await ctx.send(self.client.latency)
 
-        # send the embed
-        await ctx.send(author.mention, embed=embed)
+    # Command for the bot to yeet out of the server because why not, it's funny
+    @commands.command(pass_context=True)
+    async def leave(self, ctx):
+        """Leaves the server to go get smokes at the convenience store, never to return again"""
+        await ctx.send("I'm just going to get some smokes from the store, I'll be back in a few minutes I swear!")
+        # Find the server ID that you will leave
+        to_leave = self.client.get_guild(ctx.message.guild.id)
+        await to_leave.leave()
 
     # Plays gif of rewind time, then deletes a certain number of messages
     @commands.command()
     @commands.has_permissions(manage_messages=True)
     async def rewind(self, ctx, amount: int):
-        embed = discord.Embed()
-        embed.set_image(url='https://media3.giphy.com/media/3d6WO0F9SK9hbmpsiX/giphy.gif')
-        await ctx.send(embed=embed)
-        await asyncio.sleep(2)
-        await ctx.channel.purge(limit=amount + 2)
+        """It's rewind time (deletes user selected amount of messages) Amount: int > 0"""
+        if amount <= 0:
+            await ctx.send("You're actually stupid (amount must be > 0)")
+        else:
+            embed = discord.Embed()
+            embed.set_image(url='https://media3.giphy.com/media/3d6WO0F9SK9hbmpsiX/giphy.gif')
+            await ctx.send(embed=embed)
+            await asyncio.sleep(2)
+            await ctx.channel.purge(limit=amount + 2)
 
     # Error handler for rewind command
     @rewind.error
@@ -51,6 +45,7 @@ class AdminCommands(commands.Cog):
     # bean command to ban a user
     @commands.command()
     async def bean(self, ctx, member: discord.Member, *, reason: str):
+        """Bans a user"""
         # Send bean message
         await ctx.send(f'Lmao you were beaned by {ctx.author.display_name} because you were {reason}!')
 

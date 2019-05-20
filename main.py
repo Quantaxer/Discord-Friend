@@ -9,7 +9,6 @@ f.close()
 
 client = commands.Bot(command_prefix='~', case_insensitive=True)
 # remove default help command to replace with custom help command
-client.remove_command('help')
 
 # List of file names go here for loading cogs
 extensions = (

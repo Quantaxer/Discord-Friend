@@ -46,7 +46,6 @@ class Message(commands.Cog):
             embed = discord.Embed()
             embed.set_image(url='https://pbs.twimg.com/profile_images/636426631876231168/8kZlHCEe_400x400.jpg')
             await message.channel.send("*sad waluigi noises*")
-            asyncio.sleep(.5)
             await message.channel.send(embed=embed)
 
 
