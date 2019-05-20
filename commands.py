@@ -7,7 +7,10 @@ import os
 import random
 
 # The token which is used to connect to discord
-TOKEN = 'NTc4NzUwNzUxODU0Mjk3MTA2.XN4J5w._qTNQaUIUKMIT2lnMntSaaG6CmA'
+f = open("token.txt", "r")
+TOKEN = f.readline().strip()
+f.close()
+
 client = commands.Bot(command_prefix='~', case_insensitive=True)
 # remove default help command to replace with custom help command
 client.remove_command('help')
@@ -34,17 +37,17 @@ async def on_message(message):
         return
 
     # The "I'm" commands for the dad jokes
-    if 'I\'m' in message.content:
+    if 'I\'m ' in message.content:
         phrase = message.content.split('I\'m')
         msg = 'Hi' + phrase[1] + ', I\'m Dad!'.format(message)
         await message.channel.send(msg)
 
-    if 'Im' in message.content:
+    if 'Im ' in message.content:
         phrase = message.content.split('Im')
         msg = 'Hi' + phrase[1] + ', I\'m Dad!'.format(message)
         await message.channel.send(msg)
 
-    if 'im' in message.content:
+    if 'im ' in message.content:
         phrase = message.content.split('im')
         msg = 'Hi' + phrase[1] + ', I\'m Dad!'.format(message)
         await message.channel.send(msg)
@@ -189,7 +192,7 @@ async def rewind(ctx, amount: int):
     embed.set_image(url='https://media3.giphy.com/media/3d6WO0F9SK9hbmpsiX/giphy.gif')
     await ctx.send(embed=embed)
     await asyncio.sleep(5)
-    await ctx.channel.purge(limit=amount)
+    await ctx.channel.purge(limit=amount + 2)
 
 # Error handler for rewind command
 @rewind.error
