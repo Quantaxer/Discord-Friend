@@ -20,6 +20,12 @@ async def on_ready():
     print(client.user.id)
     print('------')
 
+# Default error handler
+@client.event
+async def on_command_error(ctx, error):
+    if isinstance(error, commands.CommandNotFound):
+        await ctx.send("This ain't it chief (Command not found)")
+
 
 @client.event
 async def on_message(message):
@@ -175,15 +181,22 @@ async def pointer(ctx):
     await ctx.send("A pointer is something that points to a point in memory. This point is where the pointer is stored, allowing you to do stuff. You can even have pointers that point to pointers, which is called a double pointer. For example, you could have a pointer point to a pointer that points to a structure that has a variable which is a pointer to a pointer to an integer. There is no point.\n-Professor Kremer, phd in bigbrain")
 
 # Plays gif of rewind time, then deletes a certain number of messages
-# TODO: Check for error handling here
 @client.command()
 @commands.has_permissions(manage_messages=True)
 async def rewind(ctx, amount: int):
+
     embed = discord.Embed()
     embed.set_image(url='https://media3.giphy.com/media/3d6WO0F9SK9hbmpsiX/giphy.gif')
     await ctx.send(embed=embed)
     await asyncio.sleep(5)
     await ctx.channel.purge(limit=amount)
+
+# Error handler for rewind command
+@rewind.error
+async def on_command_error(ctx, error):
+    if isinstance(error, commands.MissingRequiredArgument):
+        await ctx.send("Error: Missing required argument AMOUNT\nUsage: ~rewind 20")
+
 
 # Run the client with the token
 client.run(TOKEN)
