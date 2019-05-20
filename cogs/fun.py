@@ -79,29 +79,6 @@ class CommandCogs(commands.Cog):
             await ctx.send(trash[random.randint(0, 19)])
             await asyncio.sleep(1.5)
 
-    # custom help command
-    @commands.command()
-    async def help(self, ctx):
-        author = ctx.message.author
-        embed = discord.Embed(colour=discord.Colour.blue())
-        # Create the embed
-        embed.set_author(name="List of commands")
-        embed.add_field(name="~b", value="fills a sentence with the b emoji. Must have at least one word following command",
-                        inline=False)
-        embed.add_field(name="~bedtime", value="Tells you to go to sleep", inline=False)
-        embed.add_field(name="~colossal", value="Creates a colossal mess in chat. Not for the faint of heart", inline=False)
-        embed.add_field(name="~funky", value="Funky consoles you in your time of need", inline=False)
-        embed.add_field(name="~leave",
-                        value="Leaves the server to go get smokes at the convenience store, never to return again",
-                        inline=False)
-        embed.add_field(name="~ping", value="returns time it takes to reach server", inline=False)
-        embed.add_field(name="~pointer", value="A terrible explanation of how a pointer works in c", inline=False)
-        embed.add_field(name="~pun", value="Tells a random dad joke that nobody likes", inline=False)
-        embed.add_field(name="~rewind", value="It's rewind time (deletes user selected amount of messages)", inline=False)
-
-        # send the embed
-        await ctx.send(author.mention, embed=embed)
-
     # Command to 🅱ify a sentence
     @commands.command(pass_context=True)
     async def b(self, ctx, *args):
@@ -127,22 +104,6 @@ class CommandCogs(commands.Cog):
     async def pointer(self, ctx):
         await ctx.send("A pointer is something that points to a point in memory. This point is where the pointer is stored, allowing you to do stuff. You can even have pointers that point to pointers, which is called a double pointer. For example, you could have a pointer point to a pointer that points to a structure that has a variable which is a pointer to a pointer to an integer. There is no point.\n-Professor Kremer, phd in bigbrain")
 
-    # Plays gif of rewind time, then deletes a certain number of messages
-    @commands.command()
-    @commands.has_permissions(manage_messages=True)
-    async def rewind(self, ctx, amount: int):
-        embed = discord.Embed()
-        embed.set_image(url='https://media3.giphy.com/media/3d6WO0F9SK9hbmpsiX/giphy.gif')
-        await ctx.send(embed=embed)
-        await asyncio.sleep(5)
-        await ctx.channel.purge(limit=amount + 2)
-
-    # Error handler for rewind command
-    @rewind.error
-    async def on_command_error(self, ctx, error):
-        if isinstance(error, commands.MissingRequiredArgument):
-            await ctx.send("Error: Missing required argument AMOUNT\nUsage: ~rewind 20")
-
     # funky kong command
     @commands.command()
     async def funky(self, ctx):
@@ -157,5 +118,6 @@ class CommandCogs(commands.Cog):
         await ctx.send(embed=embed)
 
 
+# adds the cog to the main bot
 def setup(client):
     client.add_cog(CommandCogs(client))

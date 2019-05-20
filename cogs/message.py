@@ -40,6 +40,6 @@ class MessageCog(commands.Cog):
         # THIS IS STUPID for some reason you need this line here for commands to work
         await self.client.process_commands(message)
 
-
+# adds the cog to the main bot
 def setup(client):
     client.add_cog(MessageCog(client))

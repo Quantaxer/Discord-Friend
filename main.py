@@ -11,11 +11,14 @@ client = commands.Bot(command_prefix='~', case_insensitive=True)
 # remove default help command to replace with custom help command
 client.remove_command('help')
 
+# List of file names go here for loading cogs
 extensions = (
-    'cogs.commands',
-    'cogs.message'
+    'cogs.fun',
+    'cogs.message',
+    'cogs.admin'
 )
 
+# Loops through extensions list and loads each cog
 if __name__ == '__main__':
     for extension in extensions:
         client.load_extension(extension)
