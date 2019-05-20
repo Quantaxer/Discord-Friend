@@ -144,6 +144,7 @@ async def help(ctx):
                     inline=False)
     embed.add_field(name="~bedtime", value="Tells you to go to sleep", inline=False)
     embed.add_field(name="~colossal", value="Creates a colossal mess in chat. Not for the faint of heart", inline=False)
+    embed.add_field(name="~funky", value="Funky consoles you in your time of need", inline=False)
     embed.add_field(name="~leave",
                     value="Leaves the server to go get smokes at the convenience store, never to return again",
                     inline=False)
@@ -184,7 +185,6 @@ async def pointer(ctx):
 @client.command()
 @commands.has_permissions(manage_messages=True)
 async def rewind(ctx, amount: int):
-
     embed = discord.Embed()
     embed.set_image(url='https://media3.giphy.com/media/3d6WO0F9SK9hbmpsiX/giphy.gif')
     await ctx.send(embed=embed)
@@ -196,6 +196,20 @@ async def rewind(ctx, amount: int):
 async def on_command_error(ctx, error):
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send("Error: Missing required argument AMOUNT\nUsage: ~rewind 20")
+
+# funky kong command
+@client.command()
+async def funky(ctx):
+    await ctx.send("Funky cares for all your needs. Funky loves you for who you are.")
+    await asyncio.sleep(1.5)
+    await ctx.send("https://www.youtube.com/watch?v=68JQtxTzjqc")
+    await asyncio.sleep(1.5)
+    await ctx.send("https://www.youtube.com/watch?v=Dj7K2Bql6D4")
+    await asyncio.sleep(1.5)
+    embed = discord.Embed()
+    embed.set_image(url='https://vignette.wikia.nocookie.net/mario/images/b/b0/Funky_Kong_Artwork_-_Mario_Kart_Wii.png/revision/latest?cb=20120424225007')
+    await ctx.send(embed=embed)
+
 
 
 # Run the client with the token
