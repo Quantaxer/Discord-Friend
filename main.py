@@ -14,7 +14,8 @@ client = commands.Bot(command_prefix='~', case_insensitive=True)
 extensions = (
     'cogs.fun',
     'cogs.message',
-    'cogs.admin'
+    'cogs.admin',
+    'cogs.productivity'
 )
 
 # Loops through extensions list and loads each cog

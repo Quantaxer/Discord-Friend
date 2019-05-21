@@ -131,7 +131,9 @@ class CommandCogs(commands.Cog):
         list_of_roasts = []
         # Get path of pun file
         cur_path = os.path.dirname(__file__)
-        new_path = os.path.relpath('..\\data\\roasts.txt', cur_path)
+        # Go down one directory to the parent and open file
+        parent_path = os.path.split(cur_path)[0]
+        new_path = os.path.relpath('data\\roast.txt', parent_path)
         # open file and append each line to the list
         with open(new_path, 'r') as f:
             for line in f:
