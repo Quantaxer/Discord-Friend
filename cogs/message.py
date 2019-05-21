@@ -41,6 +41,10 @@ class Message(commands.Cog):
         if message.content.startswith('no u'):
             await message.channel.send('no u')
 
+        # catch this rye
+        if "get this bread" in message.content:
+            await message.channel.send("Let's catch this rye!")
+
         # sad waluigi noises
         if message.content.startswith('wah'):
             embed = discord.Embed()

@@ -7,9 +7,16 @@ class ProductivityCommands(commands.Cog):
     def __init__(self, client):
         self.client = client
 
+    # Group all commands under a certain alias
+    @commands.group()
+    async def reminder(self, ctx):
+        # If the user entered an invalid command go here
+        if ctx.invoked_subcommand is None:
+            await ctx.send("Command does not exist (add, remove, clear, display)")
+
     # Reminder commands
-    @commands.command()
-    async def save_reminder(self, ctx, *, arg):
+    @reminder.command()
+    async def add(self, ctx, *, arg):
         """Saves a reminder for later reference (usage: ~save_reminder foo bar)"""
         # Get path of pun file
         cur_path = os.path.dirname(__file__)
@@ -21,8 +28,8 @@ class ProductivityCommands(commands.Cog):
             f.write(arg + "\n")
         await ctx.send("Added \"" + arg + "\" to reminders")
 
-    @commands.command()
-    async def show_reminder(self, ctx):
+    @reminder.command()
+    async def display(self, ctx):
         """Displays all reminders that have been added"""
         # Get path of pun file
         cur_path = os.path.dirname(__file__)
@@ -46,8 +53,8 @@ class ProductivityCommands(commands.Cog):
 
         await ctx.send(ctx.message.author.mention, embed=embed)
 
-    @commands.command()
-    async def clear_reminder(self, ctx):
+    @reminder.command()
+    async def clear(self, ctx):
         """Clears all reminders from the list"""
         cur_path = os.path.dirname(__file__)
         # Go down one directory to the parent and open file
@@ -59,8 +66,8 @@ class ProductivityCommands(commands.Cog):
 
         await ctx.send("Cleared all contents from reminders")
 
-    @commands.command()
-    async def delete_reminder(self, ctx, num: int):
+    @reminder.command()
+    async def remove(self, ctx, num: int):
         """Removes a selected reminder from the list"""
         reminders = []
         cur_path = os.path.dirname(__file__)
