@@ -18,7 +18,7 @@ class ProductivityCommands(commands.Cog):
         new_path = os.path.relpath('data\\reminder.txt', parent_path)
 
         with open(new_path, 'a') as f:
-            f.write("\n" + arg)
+            f.write(arg + "\n")
         await ctx.send("Added \"" + arg + "\" to reminders")
 
     @commands.command()
@@ -37,8 +37,8 @@ class ProductivityCommands(commands.Cog):
         # Open file, read through each line and add to embed
         with open(new_path, 'r') as f:
             for line in f:
-                embed.add_field(name="Reminder " + str(count), value=line, inline=False)
                 count += 1
+                embed.add_field(name="Reminder " + str(count), value=line, inline=False)
 
         # Send this if there are no reminders at the moment
         if count == 0:
@@ -58,6 +58,29 @@ class ProductivityCommands(commands.Cog):
         f.truncate(0)
 
         await ctx.send("Cleared all contents from reminders")
+
+    @commands.command()
+    async def delete_reminder(self, ctx, num: int):
+        """Removes a selected reminder from the list"""
+        reminders = []
+        cur_path = os.path.dirname(__file__)
+        # Go down one directory to the parent and open file
+        parent_path = os.path.split(cur_path)[0]
+        new_path = os.path.relpath('data\\reminder.txt', parent_path)
+        # open file to find which reminder to remove
+        with open(new_path, 'r') as f:
+            for line in f:
+                reminders.append(line)
+        # Do error checking to see if user input was valid
+        if num > len(reminders) or num <= 0:
+            await ctx.send("Number not in reminders")
+        else:
+            # Remove the selected number and update the list
+            del reminders[num - 1]
+            with open(new_path, 'w') as f:
+                for line in reminders:
+                    f.write(line)
+            await ctx.send("Removed reminder number " + str(num) + " from reminders")
 
 
 # adds the cog to the main bot

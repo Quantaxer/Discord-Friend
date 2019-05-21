@@ -6,7 +6,7 @@ import datetime
 import asyncio
 
 
-class CommandCogs(commands.Cog):
+class FunCommands(commands.Cog):
     def __init__(self, client):
         self.client = client
 
@@ -146,4 +146,4 @@ class CommandCogs(commands.Cog):
 
 # adds the cog to the main bot
 def setup(client):
-    client.add_cog(CommandCogs(client))
+    client.add_cog(FunCommands(client))
