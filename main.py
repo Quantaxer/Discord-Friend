@@ -42,14 +42,10 @@ async def on_command_error(ctx, error):
     elif isinstance(error, commands.NotOwner):
         await ctx.send('Who are you? You didn\'t make me')
     # Non standard errors
-    elif str(ctx.command) == "ackshually search":
-        await ctx.send("Error: Missing search parameter.\nUsage: ~ackshually search (search term)")
-    elif str(ctx.command) == "ackshually summary":
-        await ctx.send("Error: Missing search parameter.\nUsage: ~ackshually summary (search term)")
-    elif str(ctx.command) == "reminder add":
-        await ctx.send("Error: Missing reminder parameter.\nUsage: ~reminder add (reminder)")
-    elif str(ctx.command) == "reminder remove":
-        await ctx.send("Error: Missing reminder value.\nUsage: ~reminder remove (reminder number)")
+    elif str(ctx.command).partition(" ")[0] == "ackshually":
+        await ctx.send("Error: Missing search parameter.\nUsage: ~ackshually " + str(ctx.command).split(" ")[1] + " (search term)")
+    elif str(ctx.command).partition(" ")[0] == "reminder":
+        await ctx.send("Error: Missing reminder parameter.\nUsage: ~reminder " + str(ctx.command).split(" ")[1] + " (reminder)")
     else:
         await ctx.send(error)
 

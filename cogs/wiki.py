@@ -41,6 +41,33 @@ class WikiCommands(commands.Cog):
 
         await ctx.send(msg)
 
+    @ackshually.command()
+    async def url(self, ctx, *, arg):
+        """Gets the url of a specified wikipedia article"""
+        try:
+            msg = "**This is what I found:**\n\n" + wikipedia.page(arg).url
+        except wikipedia.exceptions.DisambiguationError as e:
+            # occurs when the result is a disambiguation page
+            size = len(e.options)
+            # only display 10 options if more exist
+            if size > 9:
+                msg = "**This is a disambiguation page. Here are some related pages instead.**\n\n" + '\n'.join(e.options[0:9]) + "\n*And " + str(size - 10) + " more*"
+            else:
+                msg = "**This is a disambiguation page. Here are some related pages instead.**\n\n" + '\n'.join(e.options)
+        except wikipedia.exceptions.PageError as e:
+            # occurs if the page doesn't exist
+            msg = e
+
+        await ctx.send(msg)
+
+    @ackshually.command()
+    async def random(self, ctx):
+        """Gets the url of a random wikipedia article"""
+        # first get a random page name, then find the url for the page
+        page_name = wikipedia.random(1)
+        msg = "**This is what I found:**\n\n" + wikipedia.page(page_name).url
+        await ctx.send(msg)
+
 
 # adds the cog to the main bot
 def setup(client):
