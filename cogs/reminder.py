@@ -1,6 +1,7 @@
 from discord.ext import commands
 import os
 import discord
+import datetime
 
 
 class ProductivityCommands(commands.Cog):
@@ -10,6 +11,7 @@ class ProductivityCommands(commands.Cog):
     # Group all commands under a certain alias
     @commands.group()
     async def reminder(self, ctx):
+        """Group of commands to set reminders to view"""
         # If the user entered an invalid command go here
         if ctx.invoked_subcommand is None:
             await ctx.send("Command does not exist (add, remove, clear, display)")
@@ -17,15 +19,16 @@ class ProductivityCommands(commands.Cog):
     # Reminder commands
     @reminder.command()
     async def add(self, ctx, *, arg):
-        """Saves a reminder for later reference (usage: ~save_reminder foo bar)"""
+        """Saves a reminder for later reference (usage: ~reminder add foo bar)"""
         # Get path of pun file
         cur_path = os.path.dirname(__file__)
         # Go down one directory to the parent and open file
         parent_path = os.path.split(cur_path)[0]
         new_path = os.path.relpath('data\\reminder.txt', parent_path)
 
+        current = datetime.datetime.now()
         with open(new_path, 'a') as f:
-            f.write(arg + "\n")
+            f.write("Created on " + str(current.year) + "/" + str(current.month) + "/" +  str(current.day) + ": " + arg + "\n")
         await ctx.send("Added \"" + arg + "\" to reminders")
 
     @reminder.command()
@@ -68,7 +71,7 @@ class ProductivityCommands(commands.Cog):
 
     @reminder.command()
     async def remove(self, ctx, num: int):
-        """Removes a selected reminder from the list"""
+        """Removes a selected reminder from the list (usage: ~reminder remove 2)"""
         reminders = []
         cur_path = os.path.dirname(__file__)
         # Go down one directory to the parent and open file

@@ -8,12 +8,13 @@ class WikiCommands(commands.Cog):
 
     # Group all commands under a certain alias
     @commands.group()
-    async def wiki(self, ctx):
+    async def ackshually(self, ctx):
+        """Web scraper to retrieve Wikipedia articles"""
         # If the user entered an invalid command go here
         if ctx.invoked_subcommand is None:
-            await ctx.send("Command does not exist ()")
+            await ctx.send("Command does not exist (search, summary)")
 
-    @wiki.command()
+    @ackshually.command()
     async def search(self, ctx, *, arg):
         """Searches Wikipedia for any related pages"""
         data = wikipedia.search(arg)
@@ -21,7 +22,7 @@ class WikiCommands(commands.Cog):
         msg = "\n".join(data)
         await ctx.send(msg)
 
-    @wiki.command()
+    @ackshually.command()
     async def summary(self, ctx, *, arg):
         """Provides a brief 5 sentence summary for a certain Wikipedia page"""
         try:
