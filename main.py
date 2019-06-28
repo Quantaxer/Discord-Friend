@@ -16,7 +16,8 @@ extensions = (
     'cogs.message',
     'cogs.admin',
     'cogs.reminder',
-    'cogs.wiki'
+    'cogs.wiki',
+    'cogs.blackjack'
 )
 
 # Loops through extensions list and loads each cog

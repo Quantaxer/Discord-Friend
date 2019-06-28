@@ -12,7 +12,7 @@ class WikiCommands(commands.Cog):
         """Web scraper to retrieve Wikipedia articles"""
         # If the user entered an invalid command go here
         if ctx.invoked_subcommand is None:
-            await ctx.send("Command does not exist (search, summary)")
+            await ctx.send("Bruh you stupid, include a command next time (search, summary, url, random)")
 
     @ackshually.command()
     async def search(self, ctx, *, arg):
@@ -65,7 +65,7 @@ class WikiCommands(commands.Cog):
         """Gets the url of a random wikipedia article"""
         # first get a random page name, then find the url for the page
         page_name = wikipedia.random(1)
-        msg = "**This is what I found:**\n\n" + wikipedia.page(page_name).url
+        msg = "**Is this what you wanted?** *" + wikipedia.page(page_name).title + "*\n\n" + wikipedia.page(page_name).url
         await ctx.send(msg)
 
 
