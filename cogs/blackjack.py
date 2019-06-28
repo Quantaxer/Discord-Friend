@@ -37,6 +37,7 @@ class BlackjackCommands(commands.Cog):
         def check(m):
             return m.author == ctx.message.author and m.channel == ctx.message.channel
 
+        # Main game loop
         while True:
             # Get the player's bet
             await ctx.send("Enter your bet. Your current winnings are $" + str(self.player_pot))
@@ -56,12 +57,12 @@ class BlackjackCommands(commands.Cog):
 
                 # Go through the player's turn
                 while calculate_value(player) <= 21:
-                    await ctx.send(calculate_value(player))
+                    await ctx.send("hehe" + str(calculate_value(player)))
 
                     player_action = await self.client.wait_for('message', check=check)
                     # Error check the user's input
-                    while player_action.content != 'h' or  player_action.content == 's':
-                        ctx.send("Re renter that command, can't you read?")
+                    while player_action.content != 'h' and player_action.content != 's':
+                        await ctx.send("Re renter that command, can't you read?")
                         player_action = await self.client.wait_for('message', check=check)
 
                     # draw another card
@@ -70,6 +71,25 @@ class BlackjackCommands(commands.Cog):
                     # Do dealer's turn
                     elif player_action.content == 's':
                         break
+
+                if calculate_value(player) > 21:
+                    await ctx.send("You lose!")
+                else:
+                    while calculate_value(dealer) <= 21:
+                        if calculate_value(dealer) < 17:
+                            dealer += self.deck.deal(1)
+                        else:
+                            break
+
+                    await ctx.send(calculate_value(dealer))
+                    if calculate_value(player) > calculate_value(dealer) or calculate_value(dealer) > 21:
+                        await ctx.send("You win!")
+                        self.player_pot += int(bet_num.content) * 2
+                    elif calculate_value(player) < calculate_value(dealer):
+                        await ctx.send("You lose!")
+                    else:
+                        await ctx.send("Tie!")
+                        self.player_pot += int(bet_num.content)
 
                 await ctx.send("Do you want to continue? Type q to quit. Type anything else to continue")
                 response = await self.client.wait_for('message', check=check)
