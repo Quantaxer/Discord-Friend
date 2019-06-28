@@ -4,6 +4,12 @@ import asyncio
 import pydealer
 
 
+suit_map = {'Diamonds': '\u2662',
+            'Clubs': '\u2667',
+            'Hearts': '\u2661',
+            'Spades': '\u2664'}
+
+
 class BlackjackCommands(commands.Cog):
     def __init__(self, client):
         self.client = client
@@ -37,16 +43,36 @@ class BlackjackCommands(commands.Cog):
         def check(m):
             return m.author == ctx.message.author and m.channel == ctx.message.channel
 
+        def hand_display(hand):
+            """Returns text card display for hand
+            keyword arguments:
+            hand -- pydealer stack, players' hand
+            """
+            if not hand:
+                return ''
+            return_text = ''
+            rank = ''
+            suit = ''
+            for card in hand:
+                suit = suit_map[card.suit]
+                if pydealer.const.DEFAULT_RANKS['values'][card.value] >= 10:
+                    rank = card.value[0]
+                else:
+                    rank = card.value
+                return_text += '| {0:2.2} {1} | '.format(rank, suit)
+
+            return return_text
+
         await ctx.send("This command can simulate gambling away your parent's inheritance with a game of Blackjack. Follow the instructions below to make them proud.")
         msg = await ctx.send('\nDealer:    Value: 0 \n\n' + str(ctx.author.mention)
-                             + '   Value: 0     Bet: 0     Pot: ' + str(self.player_pot))
+                             + '   Value: 0     Bet: 0     Pot: ' + str(self.player_pot) + '\n')
         instructions = await ctx.send("*Enter your bet. Your current winnings are $" + str(self.player_pot) + '*')
         # Main game loop
         while self.player_pot > 0:
-            # Get the player's bet
             await instructions.edit(content="*Enter your bet. Your current winnings are $" + str(self.player_pot) + '*')
+            # Get the player's bet
             bet_num = await self.client.wait_for('message', check=check)
-
+            await ctx.channel.purge(limit=1)
             # Error check to see if they entered a valid bet
             if int(bet_num.content) > self.player_pot:
                 await instructions.edit(content="You're too poor for that idiot. reenter the amount to bet.")
@@ -60,9 +86,9 @@ class BlackjackCommands(commands.Cog):
                 dealer = self.deck.deal(1)
 
                 await msg.edit(
-                    content='\nDealer:    Value: ' + str(calculate_value(dealer)) + '\n\n' + str(ctx.author.mention)
+                    content='\nDealer:    Value: ' + str(calculate_value(dealer)) + '\n' + hand_display(dealer) + '\n\n' + str(ctx.author.mention)
                             + '   Value: ' + str(
-                        calculate_value(player)) + '     Bet: ' + bet_num.content + '    Pot: ' + str(self.player_pot))
+                        calculate_value(player)) + '     Bet: ' + bet_num.content + '    Pot: ' + str(self.player_pot)+ '\n' + hand_display(player) + '\n')
 
                 # Go through the player's turn
                 while calculate_value(player) <= 21:
@@ -70,17 +96,24 @@ class BlackjackCommands(commands.Cog):
                     player_action = await self.client.wait_for('message', check=check)
                     # Error check the user's input
                     while player_action.content != 'h' and player_action.content != 's':
-                        await instructions.edit(content="Re renter that command, can't you read? Type \'h\' to hit or \'s\' to stay.")
+                        await instructions.edit(content="Reenter that command, can't you read? Type \'h\' to hit or \'s\' to stay.")
                         player_action = await self.client.wait_for('message', check=check)
+                        await ctx.channel.purge(limit=1)
 
                     # draw another card
                     if player_action.content == 'h':
                         player += self.deck.deal(1)
-                        await msg.edit(content='\nDealer:    Value: ' + str(calculate_value(dealer)) + '\n\n' + str(ctx.author.mention)
-                        + '   Value: ' + str(calculate_value(player)) + '     Bet: ' + bet_num.content + '    Pot: ' + str(self.player_pot))
+                        await msg.edit(
+                            content='\nDealer:    Value: ' + str(calculate_value(dealer)) + '\n' + hand_display(
+                                dealer) + '\n\n' + str(ctx.author.mention)
+                                    + '   Value: ' + str(
+                                calculate_value(player)) + '     Bet: ' + bet_num.content + '    Pot: ' + str(
+                                self.player_pot) + '\n' + hand_display(player) + '\n')
+                        await ctx.channel.purge(limit=1)
                     # Do dealer's turn
                     elif player_action.content == 's':
                         await instructions.edit(content='Dealer\'s turn, get ready to lose!')
+                        await ctx.channel.purge(limit=1)
                         break
 
                 if calculate_value(player) > 21:
@@ -90,11 +123,12 @@ class BlackjackCommands(commands.Cog):
                         if calculate_value(dealer) < 17 and calculate_value(dealer) < calculate_value(player):
                             dealer += self.deck.deal(1)
                             await asyncio.sleep(1)
-                            await msg.edit(content='\nDealer:    Value: ' + str(calculate_value(dealer)) + '\n\n' + str(
-                                ctx.author.mention)
-                                                   + '   Value: ' + str(
-                                calculate_value(player)) + '     Bet: ' + bet_num.content + '    Pot: ' + str(
-                                self.player_pot))
+                            await msg.edit(
+                                content='\nDealer:    Value: ' + str(calculate_value(dealer)) + '\n' + hand_display(
+                                    dealer) + '\n\n' + str(ctx.author.mention)
+                                        + '   Value: ' + str(
+                                    calculate_value(player)) + '     Bet: ' + bet_num.content + '    Pot: ' + str(
+                                    self.player_pot) + '\n' + hand_display(player))
                         else:
                             break
 
@@ -107,9 +141,10 @@ class BlackjackCommands(commands.Cog):
                         await instructions.edit(content="**Wow. We just tied. This game is stupid**")
                         self.player_pot += int(bet_num.content)
 
-                await asyncio.sleep(1)
+                await asyncio.sleep(2)
                 await instructions.edit(content="Do you want to continue? Type q to quit. Type anything else to continue")
                 response = await self.client.wait_for('message', check=check)
+                await ctx.channel.purge(limit=1)
                 if response.content == 'q':
                     break
 
