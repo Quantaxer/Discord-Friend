@@ -163,7 +163,6 @@ class BlackjackCommands(commands.Cog):
                 await instructions.edit(content="Enter an actual number you soggy frying pan lookin ass.")
 
 
-
 # adds the cog to the main bot
 def setup(client):
     client.add_cog(BlackjackCommands(client))
